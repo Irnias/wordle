@@ -38,7 +38,7 @@ export class Game implements GameInterface{
   }
 
   private updateTexRow = (letter: string): void => {
-    const letterBox: Element = this.getHTMLLetterBox();
+    const letterBox: Element = this.getCurrentHTMLLetterBox();
     letterBox.textContent = letter;
     letterBox.classList.add('filled-letter');
   };
@@ -47,13 +47,13 @@ export class Game implements GameInterface{
     this._letterIndex++;
   };
 
-  private getHTMLLetterBox(): Element {
+  private getCurrentHTMLLetterBox(): Element {
     return Array.from(this._letterRows)[this._letterRowIndex].children[this._letterIndex-1];
   }
 
   removeLetter(): void {
     if(this._letterIndex > 0) {
-      const letterBox: Element = this.getHTMLLetterBox();
+      const letterBox: Element = this.getCurrentHTMLLetterBox();
       letterBox.textContent = '';
       letterBox.classList.remove('filled-letter');
       this.removeLetterIndex();
