@@ -6,7 +6,7 @@ export class CheckWordObserver {
 
   public invoke: Observer<KeyboardEvent> = {
     next: (e) => {
-      if (e.key === 'Enter'){
+      if (e.key === 'Enter') {
         this.game.checkWord(this.fieldResultSubject$);
       }
     },

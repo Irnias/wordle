@@ -1,19 +1,16 @@
-import { Observer } from "rxjs";
-import {GameInterface} from "../GameInterface";
+import { Observer } from 'rxjs';
+import { GameInterface } from '../GameInterface';
 
 export class RemoveLetterObserver {
-
-  constructor(private game: GameInterface) {
-  }
+  constructor(private game: GameInterface) {}
 
   public invoke: Observer<KeyboardEvent> = {
-    next: (e) => e.key === 'Backspace' ? this.game.removeLetter() : '',
+    next: (e) => (e.key === 'Backspace' ? this.game.removeLetter() : ''),
     error: function (err: any): void {
-      throw new Error("Function not implemented.");
+      throw new Error('Function not implemented.');
     },
     complete: function (): void {
-      throw new Error("Function not implemented.");
-    }
-  }
-
+      throw new Error('Function not implemented.');
+    },
+  };
 }

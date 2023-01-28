@@ -44,8 +44,7 @@ export class Game implements GameInterface {
     try {
       this.validateLetter(letter);
       this.addLetterAction(letter);
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
   private addLetterAction = (letter: string): void => {
