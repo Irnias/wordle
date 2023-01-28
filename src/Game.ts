@@ -8,10 +8,12 @@ export class Game implements GameInterface {
   _letterRows: HTMLCollectionOf<Element>;
   _currentWord: string;
   _userWordle: string[] = [];
+  private _messageText: Element;
 
   constructor(letterRowsClassNameContainer: string) {
     this._letterRows = document.getElementsByClassName(letterRowsClassNameContainer);
     this._currentWord = this.getRandomWord();
+    this._messageText = document.getElementsByClassName('message-text')[0];
   }
 
   checkWord = (fieldResultSubject$: Subject<any>) => {
@@ -20,7 +22,10 @@ export class Game implements GameInterface {
       return;
     }
     if (!WORDS.includes(this._userWordle.join(''))) {
-      console.log(`La palabra ${this._userWordle.join('')} no existe, avisanos que la agregamos!`);
+      this._messageText.textContent = `La palabra ${this._userWordle.join('')} no existe, avisanos que la agregamos!`;
+      setTimeout( () => {
+        this._messageText.textContent ='';
+      }, 5000)
       for (let i = 0; i < 5; i++) {
         this.removeLetter();
       }
