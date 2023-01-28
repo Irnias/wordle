@@ -1,31 +1,41 @@
+import WORDS from '../src/words.json';
+
 export interface GameInterface {
   readonly _letterIndex:number;
   readonly _letterRowIndex:number;
   _letterRows: HTMLCollectionOf<Element>;
+  _currentWord: string;
   addLetter: (letter:string) => void;
   removeLetter: () => void;
+  checkWord: () => void;
 }
 
 export class Game implements GameInterface{
   _letterIndex: number = 0;
   _letterRowIndex: number = 0;
   _letterRows: HTMLCollectionOf<Element>;
+  _currentWord: string;
   _userWordle: string[] = [];
 
   constructor(letterRowsClassNameContainer: string) {
     this._letterRows = document.getElementsByClassName(letterRowsClassNameContainer);
+    this._currentWord = this.getRandomWord();
   }
 
-  addLetter(letter: string): void {
+  checkWord = () => {
+
+  };
+
+  addLetter = (letter: string): void => {
     try{
       this.validateLetter(letter);
-      this.gameLogicActions(letter);
+      this.addLetterAction(letter);
     }catch (e) {
       console.log(e.message);
     }
   }
 
-  private gameLogicActions(letter: string): void {
+  private addLetterAction = (letter: string): void => {
     if (this._letterIndex <= 4) {
       this.addLetterIndex();
       this.updateTexRow(letter);
@@ -33,7 +43,7 @@ export class Game implements GameInterface{
     }
   }
 
-  private fillUserWordle(letter: string): void {
+  private fillUserWordle = (letter: string): void => {
       this._userWordle.push(letter);
   }
 
@@ -43,15 +53,13 @@ export class Game implements GameInterface{
     letterBox.classList.add('filled-letter');
   };
 
-  private addLetterIndex(): void {
-    this._letterIndex++;
-  };
+  private addLetterIndex = (): void => { this._letterIndex++; }
 
-  private getCurrentHTMLLetterBox(): Element {
+  private getCurrentHTMLLetterBox = (): Element => {
     return Array.from(this._letterRows)[this._letterRowIndex].children[this._letterIndex-1];
   }
 
-  removeLetter(): void {
+  removeLetter = (): void => {
     if(this._letterIndex > 0) {
       const letterBox: Element = this.getCurrentHTMLLetterBox();
       letterBox.textContent = '';
@@ -61,15 +69,16 @@ export class Game implements GameInterface{
     }
   }
 
-  private removeLetterIndex(): void {
-    this._letterIndex--;
-  }
+  private removeLetterIndex = (): void => { this._letterIndex--; }
 
-  private validateLetter(letter: string): void {
+  private validateLetter = (letter: string): void => {
     if (!letter.match(/^[A-Z]$/)){
       throw new Error('No es una letra.');
     }
   }
+
+  private getRandomWord = () => WORDS[Math.floor(Math.random()*WORDS.length)];
+
 }
 
 new Game('letter-row');
