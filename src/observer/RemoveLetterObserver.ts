@@ -1,5 +1,5 @@
 import { Observer } from "rxjs";
-import { GameInterface } from "../Game";
+import {GameInterface} from "../GameInterface";
 
 export class RemoveLetterObserver {
 
