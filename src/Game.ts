@@ -1,6 +1,7 @@
 import WORDS from '../src/words.json';
 import { GameInterface } from './GameInterface';
 import { Subject } from 'rxjs';
+import { LogLevel } from 'ts-loader/dist/logger';
 
 export class Game implements GameInterface {
   _letterIndex: number = 0;
@@ -18,22 +19,34 @@ export class Game implements GameInterface {
 
   checkWord = (fieldResultSubject$: Subject<any>) => {
     if (this._userWordle.length !== 5) {
-      console.log('La palabra no tiene 5 letras');
+      this.sendMessage('La palabra no tiene 5 letras', 5000);
       return;
     }
     if (!WORDS.includes(this._userWordle.join(''))) {
-      this._messageText.textContent = `La palabra ${this._userWordle.join('')} no existe, avisanos que la agregamos!`;
-      setTimeout( () => {
-        this._messageText.textContent ='';
-      }, 5000)
+      const textContent = `La palabra ${this._userWordle.join(
+        ''
+      )} no existe. Si esto es un error, avisanos que la agregamos!`;
+      this.sendMessage(textContent, 5000);
       for (let i = 0; i < 5; i++) {
         this.removeLetter();
       }
       return;
     }
+    if (this._letterRowIndex > 4) {
+      const textContent = 'Mas suerte para la proxima!';
+      this.sendMessage(textContent, 5000);
+      return;
+    }
     fieldResultSubject$.next('');
     this.resetWordAndGoNextRow();
   };
+
+  private sendMessage(textContent: string, ms: number) {
+    this._messageText.textContent = textContent;
+    setTimeout(() => {
+      this._messageText.textContent = '';
+    }, ms);
+  }
 
   private resetWordAndGoNextRow() {
     this._letterRowIndex++;
